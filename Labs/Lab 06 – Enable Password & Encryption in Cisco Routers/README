@@ -1,0 +1,51 @@
+This lab demonstrates how the enable password works on Cisco routers and how it is affected by the service password-encryption command.
+
+Set the enable password
+Enter global configuration mode and set the password:
+Router(config)# enable password flower
+
+View the running configuration
+Router# show running-config
+
+
+Observation: Lab06-Image1
+The password appears in plain text:
+enable password flower
+No encryption is applied yet.
+
+Enable password encryption
+Router(config)# service password-encryption
+
+View the running configuration again
+Router# show running-config
+
+
+Observation: Lab06-Image2
+The password is now encrypted using Type 7:
+enable password 7 094F4A1E0A
+(The encoded value will differ each time.)
+Type 7 is reversible and provides only basic obfuscation, not strong security.
+
+Disable password encryption
+Router(config)# no service password-encryption
+
+View the running configuration again
+Router# show running-config
+
+Observation:
+The password remains encrypted.
+Cisco IOS does not decrypt previously encrypted passwords.
+The command only prevents future passwords from being encrypted.
+
+TIP
+What type of encryption is used?
+Cisco Type 7 Encryption
+
+Reversible
+Weak and easily cracked
+Intended only to hide plain-text passwords
+Not suitable for secure environments
+
+For real security use,
+enable secret <password>
+which uses Type 5 (MD5) or Type 9 (scrypt) hashing depending on IOS version.
